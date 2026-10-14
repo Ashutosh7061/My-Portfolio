@@ -1,0 +1,90 @@
+:root {
+  --bg: #0a1118;
+  --bg-2: #0f1c2a;
+  --ink: #d6e2ee;
+  --ink-strong: #f2f7fc;
+  --dim: #6f8499;
+  --line: #1f3347;
+  --line-soft: rgba(124, 196, 255, 0.14);
+  --ok: #4be3a0;
+  --amber: #ffb347;
+  --blue: #7cc4ff;
+  --glass: rgba(8, 15, 23, 0.82);
+  --radius: 14px;
+  --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --display: 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body, #root { height: 100%; margin: 0; }
+
+body {
+  background:
+    radial-gradient(60% 50% at 88% 92%, rgba(75, 227, 160, 0.07), transparent 70%),
+    radial-gradient(110% 80% at 30% 35%, #16304a 0%, var(--bg) 62%);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-variant-ligatures: none;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* vignette + faint scanlines sit above the 3D canvas but never block clicks */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+body::before {
+  background: radial-gradient(ellipse at 45% 45%, transparent 45%, rgba(3, 7, 12, 0.7) 100%);
+}
+body::after {
+  opacity: 0.045;
+  background: repeating-linear-gradient(0deg, #fff 0 1px, transparent 1px 3px);
+}
+
+::selection { background: rgba(255, 179, 71, 0.35); color: #fff; }
+
+* { scrollbar-width: thin; scrollbar-color: #2b4259 transparent; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: #2b4259; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #3a5a7a; }
+::-webkit-scrollbar-track { background: transparent; }
+
+button:focus-visible, a:focus-visible, input:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ================= atmosphere ================= */
+@property --angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+
+/* cool glow that follows the cursor (position set in main.jsx) */
+html::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(420px circle at var(--mx, 70%) var(--my, 30%), rgba(124, 196, 255, 0.07), transparent 70%);
+}
